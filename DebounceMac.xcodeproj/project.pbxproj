@@ -47,6 +47,7 @@
 /* Begin PBXFileReference section */
 		0E1EDCBE22F6DC31001C347F /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
 		0E1EDCC022F6F12B001C347F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		0E1EDCC122F6F29D001C347F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		"DebounceMac::DebounceMac::Product" /* DebounceMac */ = {isa = PBXFileReference; lastKnownFileType = text; path = DebounceMac; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_14 /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		OBJ_15 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = /Users/NobuhiroUeda/XcodeProjects/DebounceMac/.build/checkouts/SwiftyJSON/Package.swift; sourceTree = "<group>"; };
@@ -160,6 +161,7 @@
 		OBJ_5 /*  */ = {
 			isa = PBXGroup;
 			children = (
+				0E1EDCC122F6F29D001C347F /* README.md */,
 				0E1EDCC022F6F12B001C347F /* .gitignore */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
