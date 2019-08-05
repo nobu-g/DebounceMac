@@ -1,0 +1,18 @@
+[
+    {
+        "key": "ALL",
+        "delay": 100,
+    },
+    {
+        "key": "R",
+        "delay": 120,
+    },
+    {
+        "key": "Space",
+        "delay": 200,
+        "condition": {
+            "Option": true,
+            "Shift": false,
+        },
+    },
+]

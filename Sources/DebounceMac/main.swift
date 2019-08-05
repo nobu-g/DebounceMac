@@ -1,6 +1,5 @@
 import AppKit
 import CoreFoundation
-//import Foundation
 import Carbon.HIToolbox
 import SwiftyJSON
 import SwiftyBeaver
@@ -41,6 +40,7 @@ class KeyChanger {
     private var runLoopSource: CFRunLoopSource!
     private var lastKeyTime: Int64
     private var lastKeyCode: CGKeyCode
+    private let config = Config()
 
     init() {
         self.lastKeyTime = -1
@@ -94,20 +94,16 @@ class KeyChanger {
             let keyboardId = cgEvent.getIntegerValueField(.keyboardEventKeyboardType)
 
             if keyboardId != SYNTHETIC_KB_ID && currentKeyCode == self.lastKeyCode && !(nsEvent.isARepeat) {
-                var debounceDelay = 100
-                if currentKeyCode == kVK_Space {
-                    debounceDelay = 120
-                } else if (currentKeyCode == kVK_ANSI_R) {
-                    debounceDelay = 120
-                }
+                if let debounceDelay = self.config.getDelay(keyCode: currentKeyCode, modifierFlags: nsEvent.modifierFlags) {
 
-                if Int(currentKeyTime - self.lastKeyTime) < debounceDelay {
+                    if (currentKeyTime - self.lastKeyTime) < debounceDelay {
 
-                    logger.info("BOUNCE detected!!!  Character: '" + (nsEvent.characters ?? "") + "'")
-                    logger.info("Time between keys: \((currentKeyTime - self.lastKeyTime))ms (< \(debounceDelay)ms)")
+                        logger.info("BOUNCE detected!!!  Character: '" + (nsEvent.characters ?? "") + "'")
+                        logger.info("Time between keys: \((currentKeyTime - self.lastKeyTime))ms (< \(debounceDelay)ms)")
 
-                    // Cancel keypress event
-                    return true
+                        // Cancel keypress event
+                        return true
+                    }
                 }
             }
 
