@@ -5,36 +5,36 @@ import OrderedDictionary
 
 class Config {
     static let DEFAULT_DEBOUNCE_DELAY = 100
-    private static let DEFAULT_JSON = JSON(["ALL": ["delay": Config.DEFAULT_DEBOUNCE_DELAY]])
+    private static let DEFAULT_JSON = JSON([["key": "ALL", "delay": Config.DEFAULT_DEBOUNCE_DELAY]])
     private let json: JSON
     private var delayDict: [CGKeyCode: OrderedDictionary<[UInt: Bool], Int>] = [:]
 
-    init() {
+    init(fileName: String) {
         self.json = {
             if let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
                 let saveDir = appSupportDir.appendingPathComponent("DebounceMac", isDirectory: true)
-                let saveFile = saveDir.appendingPathComponent("config.json")
-                if !(FileManager.default.fileExists(atPath: saveFile.path)) {
+                let cfgFile = saveDir.appendingPathComponent(fileName)
+                if !(FileManager.default.fileExists(atPath: cfgFile.path)) {
                     if !(FileManager.default.fileExists(atPath: saveDir.path)) {
                         do {
                             try FileManager.default.createDirectory(at: saveDir, withIntermediateDirectories: false, attributes: nil)
                         } catch {
-                            logger.error("failed to create save directory: \(saveDir)")
+                            logger.error("failed to create save directory: \(saveDir.path)")
                             return Config.DEFAULT_JSON
                         }
-                        logger.info("created new directory: \(saveDir)")
+                        logger.info("created new directory: \(saveDir.path)")
                     }
                     let jsonString = Config.DEFAULT_JSON.rawString()
                     do {
-                        try jsonString!.write(to: saveFile, atomically: false, encoding: .utf8)  // save default config file
+                        try jsonString!.write(to: cfgFile, atomically: false, encoding: .utf8)  // save default config file
                     } catch {
-                        logger.error("failed to save config file: \(saveFile)")
+                        logger.error("failed to save config file: \(cfgFile.path)")
                         return Config.DEFAULT_JSON
                     }
-                    logger.info("created new file: \(saveFile)")
+                    logger.info("created new file: \(cfgFile.path)")
                 }
 
-                if let jsonString = try? String(contentsOf: saveFile, encoding: .utf8) {
+                if let jsonString = try? String(contentsOf: cfgFile, encoding: .utf8) {
                     if let data = jsonString.data(using: .utf8) {
                         if let jsonObj = try? JSON(data: data) {
                             return jsonObj
@@ -47,7 +47,7 @@ class Config {
                         return Config.DEFAULT_JSON
                     }
                 } else {
-                    logger.error("cannot open config file: \(saveFile)")
+                    logger.error("cannot open config file: \(cfgFile.path)")
                     return Config.DEFAULT_JSON
                 }
             }

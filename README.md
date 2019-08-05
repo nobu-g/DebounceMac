@@ -23,3 +23,8 @@ $ launchctl start com.debounceMac.app
 ```
 
 For details, see README of [debounce-mac](https://github.com/toothbrush/debounce-mac).
+
+## Custermize
+
+You can easily custermize debounce delay configuration by editting JSON file.
+

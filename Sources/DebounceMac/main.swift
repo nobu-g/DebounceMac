@@ -40,11 +40,12 @@ class KeyChanger {
     private var runLoopSource: CFRunLoopSource!
     private var lastKeyTime: Int64
     private var lastKeyCode: CGKeyCode
-    private let config = Config()
+    private let config: Config
 
-    init() {
+    init(configFile: String) {
         self.lastKeyTime = -1
         self.lastKeyCode = 9999
+        self.config = Config(fileName: configFile)
     }
 
     func tapEvents() -> Bool {
@@ -127,7 +128,13 @@ class KeyChanger {
 }
 
 func main() {
-    let keyChanger = KeyChanger()
+    let argv = ProcessInfo.processInfo.arguments
+    guard argv.count <= 2 else {
+        logger.error("too many arguments")
+        return
+    }
+
+    let keyChanger = KeyChanger(configFile: argv.count == 1 ? "config.json" : argv[1])
     if !(keyChanger.tapEvents()) {
         exit(1)
     }

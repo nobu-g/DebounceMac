@@ -17,6 +17,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/local/bin/debounce</string>
+		<string>config.json</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
