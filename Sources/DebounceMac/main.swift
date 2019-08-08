@@ -136,6 +136,7 @@ func main() {
 
     let keyChanger = KeyChanger(configFile: argv.count == 1 ? "config.json" : argv[1])
     if !(keyChanger.tapEvents()) {
+        logger.info("terminate")
         exit(1)
     }
     keyChanger.listen()  // blocking call.

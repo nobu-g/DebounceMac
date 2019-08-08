@@ -32,6 +32,8 @@ class Config {
                         return Config.DEFAULT_JSON
                     }
                     logger.info("created new file: \(cfgFile.path)")
+                } else {
+                    logger.info("existing config file found: \(cfgFile.path)")
                 }
 
                 if let jsonString = try? String(contentsOf: cfgFile, encoding: .utf8) {
@@ -75,6 +77,7 @@ class Config {
                 self.setDelayDict(keyCode: keyCode, delay: delay, condition: item["condition"])
             }
         }
+        logger.debug(self.delayDict)
     }
 
     private func setDelayDict(keyCode: Int, delay: Int, condition: JSON) {
@@ -97,7 +100,9 @@ class Config {
     }
 
     func getDelay(keyCode: CGKeyCode, modifierFlags: NSEvent.ModifierFlags) -> Int? {
+        logger.debug("key code: \(keyCode) modifiers: \(modifierMap.filter { modifierFlags.contains($0.value) }.keys)")
         if let conditionalDelay = self.delayDict[keyCode] {
+            logger.debug("condition: \(conditionalDelay)")
             var resultDelay: Int? = nil
             for (condition, delay) in conditionalDelay {
                 var flag = true
