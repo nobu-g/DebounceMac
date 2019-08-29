@@ -96,15 +96,20 @@ class KeyChanger {
 
             if keyboardId != SYNTHETIC_KB_ID && currentKeyCode == self.lastKeyCode && !(nsEvent.isARepeat) {
                 if let debounceDelay = self.config.getDelay(keyCode: currentKeyCode, modifierFlags: nsEvent.modifierFlags) {
-
+                    logger.debug("delay: \(debounceDelay) ? \(currentKeyTime) - \(self.lastKeyTime)")
                     if (currentKeyTime - self.lastKeyTime) < debounceDelay {
 
                         logger.info("BOUNCE detected!!!  Character: '" + (nsEvent.characters ?? "") + "'")
                         logger.info("Time between keys: \((currentKeyTime - self.lastKeyTime))ms (< \(debounceDelay)ms)")
 
+                        self.lastKeyTime = currentKeyTime
+                        self.lastKeyCode = currentKeyCode
+
                         // Cancel keypress event
                         return true
                     }
+                } else {
+                    logger.warning("failed to get debounce delay")
                 }
             }
 
