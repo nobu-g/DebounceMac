@@ -1,6 +1,6 @@
 # DebounceMac
 
-This program suppresses keyboard chattering on Mac, which occurs especially on the butterfly keyboard.  
+This program suppresses keyboard chattering on Mac, which occurs especially on a butterfly keyboard.  
 This is Swift implementation of [debounce-mac](https://github.com/toothbrush/debounce-mac).
 
 ## Usage
@@ -25,12 +25,13 @@ For details, see README of [debounce-mac](https://github.com/toothbrush/debounce
 ## Custormize
 
 You can easily custormize debounce delay configuration by editting JSON file.  
-Once you run this program, it creates config file `~/Library/ApplicationSupport/DebounceMac/config.json`.  
-By default, debounce delay(acceptable input interval) of all keys are set to 100ms and you can change this setting.
+Once you run this program, it creates config file: `~/Library/ApplicationSupport/DebounceMac/config.json`.
+By default, debounce delay (acceptable input interval) of all keys is set to 100ms and you can change this setting.
+
 
 For example, `example.json` below means
 
-- debounce delay of all keys except "R" are set to 100ms
+- debounce delay of all keys except "R" is set to 100ms
 - debounce delay of "R" is 120ms.
 - debounce delay of "Space" is 200ms only when "Option" key is down and "Shift" key is up.
 
