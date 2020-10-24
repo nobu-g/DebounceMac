@@ -16,17 +16,16 @@ $ .build/release/DebounceMac
 
 ```zsh
 $ cp .build/release/DebounceMac /usr/local/bin/debounce
-$ cp com.debounceMac.app.plist ~/Library/LaunchAgents/
-$ launchctl load ~/Library/LaunchAgents/com.debounceMac.app.plist
-$ launchctl start com.debounceMac.app
+$ cp com.user.DebounceMac.plist ~/Library/LaunchAgents/
+$ launchctl load ~/Library/LaunchAgents/com.user.DebounceMac.plist
 ```
 
 For details, see README of [debounce-mac](https://github.com/toothbrush/debounce-mac).
 
-## Custermize
+## Custormize
 
-You can easily custermize debounce delay configuration by editting JSON file.  
-Once you run this program, it creates config file `~/Library/DebounceMac/config.json`.  
+You can easily custormize debounce delay configuration by editting JSON file.  
+Once you run this program, it creates config file `~/Library/ApplicationSupport/DebounceMac/config.json`.  
 By default, debounce delay(acceptable input interval) of all keys are set to 100ms and you can change this setting.
 
 For example, `example.json` below means
@@ -64,4 +63,4 @@ You can also specify the config file name by the command line argument.
 $ .build/release/DebounceMac myconfig.json
 ```
 
-If you use launchctl, you have to edit `~/Library/LaunchAgents/com.debounceMac.app.plist` and reload it.
+If you use launchctl, you have to edit `~/Library/LaunchAgents/com.user.DebounceMac.plist` and reload it.

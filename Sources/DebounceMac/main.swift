@@ -1,6 +1,7 @@
 import AppKit
 import CoreFoundation
 import Carbon.HIToolbox
+
 import SwiftyJSON
 import SwiftyBeaver
 
