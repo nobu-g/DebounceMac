@@ -12,6 +12,8 @@ $ swift build -c release
 $ .build/release/DebounceMac
 ```
 
+Note: to build this program, you need Xcode installed.
+
 ## Auto-start at login
 
 ```zsh
