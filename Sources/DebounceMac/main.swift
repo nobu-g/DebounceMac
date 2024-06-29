@@ -82,6 +82,7 @@ class KeyChanger {
                 // Add to the current run loop.
                 CFRunLoopAddSource(CFRunLoopGetCurrent(), self.runLoopSource, .commonModes)
                 logger.info("Registering event tap as run loop source.")
+//                CFRunLoopWakeUp(CFRunLoopGetCurrent())
                 CFRunLoopRun()
             } else {
                 logger.error("No Event tap in place!  You will need to call listen after tapEvents to get events.")

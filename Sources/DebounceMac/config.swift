@@ -1,7 +1,6 @@
 import AppKit
 import SwiftyJSON
-import OrderedDictionary
-
+import OrderedCollections
 
 class Config {
     static let DEFAULT_DEBOUNCE_DELAY = 100
