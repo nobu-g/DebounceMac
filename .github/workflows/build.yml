@@ -17,10 +17,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # - name: Set up Swift
-    #   uses: fwal/setup-swift@v2
-    #   with:
-    #     swift-version: '5.6' # Adjust the Swift version as needed
+    - name: Set up Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: '5.10'
 
     # - name: Extract package version
     #   id: version
