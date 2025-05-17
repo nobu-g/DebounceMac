@@ -102,7 +102,7 @@ class Config {
         logger.debug("key code: \(keyCode) modifiers: \(modifierMap.filter { modifierFlags.contains($0.value) }.keys)")
         if let conditionalDelay = self.delayDict[keyCode] {
             logger.debug("condition: \(conditionalDelay)")
-            var resultDelay: Int? = nil
+            var resultDelay: Int?
             for (condition, delay) in conditionalDelay {
                 var flag = true
                 for (modifier, state) in condition {

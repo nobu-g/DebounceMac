@@ -1,7 +1,6 @@
 import Foundation
 import SwiftyBeaver
 
-
 func setupLogger() -> SwiftyBeaver.Type {
     let logger = SwiftyBeaver.self
 

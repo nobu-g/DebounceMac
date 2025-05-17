@@ -1,0 +1,17 @@
+ci:
+  autofix_prs: false
+  autoupdate_schedule: monthly
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-toml
+  - repo: https://github.com/realm/SwiftLint
+    rev: 0.59.1
+    hooks:
+      - id: swiftlint
+        args: ["--fix"]

@@ -5,13 +5,11 @@ import Carbon.HIToolbox
 @preconcurrency import SwiftyJSON
 import SwiftyBeaver
 
-
 typealias EventTap = CFMachPort
 
 let SYNTHETIC_KB_ID = 666
 
 let logger = setupLogger()
-
 
 func tapCallback(proxy: CGEventTapProxy, type: CGEventType, event: CGEvent, refcon: UnsafeMutableRawPointer?) -> Unmanaged<CGEvent>? {
     // Do not make the NSEvent here.
@@ -34,7 +32,6 @@ func tapCallback(proxy: CGEventTapProxy, type: CGEventType, event: CGEvent, refc
 
     return Unmanaged.passRetained(event)
 }
-
 
 class KeyChanger {
     private var eventTap: EventTap!
@@ -63,7 +60,7 @@ class KeyChanger {
 
             if self.eventTap == nil {
                 logger.error("Unable to create event tap.  Must run as root or add privlidges for assistive devices to this app.")
-                return false;
+                return false
             }
         }
         CGEvent.tapEnable(tap: self.eventTap, enable: true)
@@ -75,7 +72,7 @@ class KeyChanger {
         return CGEvent.tapIsEnabled(tap: self.eventTap)
     }
 
-    func listen() -> Void {
+    func listen() {
         if self.runLoopSource == nil {
             if self.eventTap != nil {  // Don't use self.tapActive
                 self.runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, self.eventTap, 0)
