@@ -1,10 +1,9 @@
-name: Build and Publish Artifacts
+name: Create release
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    tags:
+      - "v*.*.*"
 
 jobs:
   build:
@@ -20,7 +19,7 @@ jobs:
     - name: Set up Swift
       uses: swift-actions/setup-swift@v2
       with:
-        swift-version: '5.10'
+        swift-version: '6.1'
 
     # - name: Extract package version
     #   id: version
@@ -38,3 +37,17 @@ jobs:
       with:
         name: DebounceMac-${{ matrix.arch }}
         path: DebounceMac-${{ matrix.arch }}.zip
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Create GitHub Release
+      id: create_release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        name: DebounceMac
+        files: DebounceMac-${{ matrix.arch }}.zip
