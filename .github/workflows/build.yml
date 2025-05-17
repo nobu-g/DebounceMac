@@ -27,10 +27,14 @@ jobs:
         swift build --configuration release --arch ${{ matrix.arch }}
 
     - name: Archive build artifacts
-      run: zip -r DebounceMac-${{ matrix.arch }}.zip .build/release
+      run: |
+        mkdir -p artifacts
+        cp .build/release/DebounceMac artifacts/
+        cd artifacts
+        zip DebounceMac-${{ matrix.arch }}.zip DebounceMac
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: DebounceMac-${{ matrix.arch }}
-        path: DebounceMac-${{ matrix.arch }}.zip
+        path: artifacts/DebounceMac-${{ matrix.arch }}.zip
