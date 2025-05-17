@@ -21,10 +21,6 @@ jobs:
       with:
         swift-version: '6.1'
 
-    # - name: Extract package version
-    #   id: version
-    #   run: echo "::set-output name=VERSION::$(cat Package.swift | grep -Eo 'from: \"[^\"]+' | cut -d '"' -f 2)"
-
     - name: Build the package
       run: |
         swift build --configuration release --arch ${{ matrix.arch }}
@@ -53,7 +49,6 @@ jobs:
         tag_name: ${{ github.ref_name }}
         draft: false
         prerelease: false
-        name: DebounceMac
         files: |
           artifacts/DebounceMac-x86_64/DebounceMac-x86_64.zip
           artifacts/DebounceMac-arm64/DebounceMac-arm64.zip
