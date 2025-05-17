@@ -1,5 +1,5 @@
 import AppKit
-import SwiftyJSON
+@preconcurrency import SwiftyJSON
 import OrderedCollections
 
 class Config {
