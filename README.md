@@ -27,7 +27,7 @@ For details, see README of [debounce-mac](https://github.com/toothbrush/debounce
 ## Customize
 
 You can easily customize debounce delay configuration by editing a JSON file.
-Once you run this program, it creates a config file at `~/Library/ApplicationSupport/DebounceMac/config.json`.
+Once you run this program, it creates a config file at `~/Library/Application Support/DebounceMac/config.json`.
 By default, debounce delay (i.e., acceptable input interval) of all keys is set to 100ms, and you can change this setting.
 
 For example, `example.json` below means
