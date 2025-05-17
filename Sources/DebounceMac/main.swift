@@ -3,7 +3,6 @@ import Carbon.HIToolbox
 import CoreFoundation
 
 import SwiftyBeaver
-@preconcurrency import SwiftyJSON
 
 typealias EventTap = CFMachPort
 
