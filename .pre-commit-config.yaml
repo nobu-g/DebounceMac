@@ -15,3 +15,7 @@ repos:
     hooks:
       - id: swiftlint
         args: ["--fix"]
+  - repo: https://github.com/nicklockwood/SwiftFormat
+    rev: 0.56.1
+    hooks:
+      - id: swiftformat

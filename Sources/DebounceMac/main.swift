@@ -1,9 +1,9 @@
 import AppKit
-import CoreFoundation
 import Carbon.HIToolbox
+import CoreFoundation
 
-@preconcurrency import SwiftyJSON
 import SwiftyBeaver
+@preconcurrency import SwiftyJSON
 
 typealias EventTap = CFMachPort
 
@@ -11,7 +11,7 @@ let SYNTHETIC_KB_ID = 666
 
 let logger = setupLogger()
 
-func tapCallback(proxy: CGEventTapProxy, type: CGEventType, event: CGEvent, refcon: UnsafeMutableRawPointer?) -> Unmanaged<CGEvent>? {
+func tapCallback(proxy _: CGEventTapProxy, type: CGEventType, event: CGEvent, refcon: UnsafeMutableRawPointer?) -> Unmanaged<CGEvent>? {
     // Do not make the NSEvent here.
     // NSEvent will throw an exception if we try to make an event from the tap timeout type
 
@@ -41,43 +41,45 @@ class KeyChanger {
     private let config: Config
 
     init(configFile: String) {
-        self.lastKeyTime = -1
-        self.lastKeyCode = 9999
-        self.config = Config(fileName: configFile)
+        lastKeyTime = -1
+        lastKeyCode = 9999
+        config = Config(fileName: configFile)
     }
 
     func tapEvents() -> Bool {
-        if self.eventTap == nil {
+        if eventTap == nil {
             logger.info("Initializing an event tap.")
 
-            let eventMask = CGEventMask(1 << CGEventType.keyDown.rawValue)  // receive keyDown event only
-            self.eventTap = CGEvent.tapCreate(tap: .cgSessionEventTap,
-                                              place: .tailAppendEventTap,
-                                              options: .defaultTap,
-                                              eventsOfInterest: eventMask,
-                                              callback: tapCallback,
-                                              userInfo: Unmanaged.passRetained(self).toOpaque())  // 参照型をガベージコレクタから外し、ポインタに変換
+            let eventMask = CGEventMask(1 << CGEventType.keyDown.rawValue) // receive keyDown event only
+            eventTap = CGEvent.tapCreate(
+                tap: .cgSessionEventTap,
+                place: .tailAppendEventTap,
+                options: .defaultTap,
+                eventsOfInterest: eventMask,
+                callback: tapCallback,
+                userInfo: Unmanaged.passRetained(self).toOpaque(), // 参照型をガベージコレクタから外し、ポインタに変換
+            )
 
-            if self.eventTap == nil {
+            if eventTap == nil {
                 logger.error("Unable to create event tap.  Must run as root or add privlidges for assistive devices to this app.")
                 return false
             }
         }
-        CGEvent.tapEnable(tap: self.eventTap, enable: true)
+        CGEvent.tapEnable(tap: eventTap, enable: true)
 
-        return self.isTapActive()
+        return isTapActive()
     }
 
     func isTapActive() -> Bool {
-        return CGEvent.tapIsEnabled(tap: self.eventTap)
+        CGEvent.tapIsEnabled(tap: eventTap)
     }
 
     func listen() {
-        if self.runLoopSource == nil {
-            if self.eventTap != nil {  // Don't use self.tapActive
-                self.runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, self.eventTap, 0)
+        if runLoopSource == nil {
+            if eventTap != nil { // Don't use self.tapActive
+                runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
                 // Add to the current run loop.
-                CFRunLoopAddSource(CFRunLoopGetCurrent(), self.runLoopSource, .commonModes)
+                CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, .commonModes)
                 logger.info("Registering event tap as run loop source.")
 //                CFRunLoopWakeUp(CFRunLoopGetCurrent())
                 CFRunLoopRun()
@@ -93,16 +95,15 @@ class KeyChanger {
             let currentKeyCode = nsEvent.keyCode
             let keyboardId = cgEvent.getIntegerValueField(.keyboardEventKeyboardType)
 
-            if keyboardId != SYNTHETIC_KB_ID && currentKeyCode == self.lastKeyCode && !(nsEvent.isARepeat) {
-                if let debounceDelay = self.config.getDelay(keyCode: currentKeyCode, modifierFlags: nsEvent.modifierFlags) {
-                    logger.debug("delay: \(debounceDelay) ? \(currentKeyTime) - \(self.lastKeyTime)")
-                    if (currentKeyTime - self.lastKeyTime) < debounceDelay {
-
+            if keyboardId != SYNTHETIC_KB_ID, currentKeyCode == lastKeyCode, !(nsEvent.isARepeat) {
+                if let debounceDelay = config.getDelay(keyCode: currentKeyCode, modifierFlags: nsEvent.modifierFlags) {
+                    logger.debug("delay: \(debounceDelay) ? \(currentKeyTime) - \(lastKeyTime)")
+                    if (currentKeyTime - lastKeyTime) < debounceDelay {
                         logger.info("BOUNCE detected!!!  Character: '" + (nsEvent.characters ?? "") + "'")
-                        logger.info("Time between keys: \((currentKeyTime - self.lastKeyTime))ms (< \(debounceDelay)ms)")
+                        logger.info("Time between keys: \(currentKeyTime - lastKeyTime)ms (< \(debounceDelay)ms)")
 
-                        self.lastKeyTime = currentKeyTime
-                        self.lastKeyCode = currentKeyCode
+                        lastKeyTime = currentKeyTime
+                        lastKeyCode = currentKeyCode
 
                         // Cancel keypress event
                         return true
@@ -112,8 +113,8 @@ class KeyChanger {
                 }
             }
 
-            self.lastKeyTime = currentKeyTime
-            self.lastKeyCode = currentKeyCode
+            lastKeyTime = currentKeyTime
+            lastKeyCode = currentKeyCode
         } else {
             logger.error("failed to convert CGEvent to NSEvent")
         }
@@ -122,11 +123,11 @@ class KeyChanger {
     }
 
     func dealloc() {
-        if let runLoopSource = self.runLoopSource {
+        if let runLoopSource {
             CFRunLoopRemoveSource(CFRunLoopGetCurrent(), runLoopSource, .commonModes)
         }
-        if let eventTap = self.eventTap {
-            CGEvent.tapEnable(tap: eventTap, enable: false)  // Kill the event tap
+        if let eventTap {
+            CGEvent.tapEnable(tap: eventTap, enable: false) // Kill the event tap
         }
     }
 }
@@ -143,7 +144,7 @@ func main() {
         logger.info("terminate")
         exit(1)
     }
-    keyChanger.listen()  // blocking call.
+    keyChanger.listen() // blocking call.
     keyChanger.dealloc()
 }
 

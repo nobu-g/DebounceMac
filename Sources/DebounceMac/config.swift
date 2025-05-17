@@ -1,6 +1,6 @@
 import AppKit
-@preconcurrency import SwiftyJSON
 import OrderedCollections
+@preconcurrency import SwiftyJSON
 
 class Config {
     static let DEFAULT_DEBOUNCE_DELAY = 100
@@ -9,7 +9,7 @@ class Config {
     private var delayDict: [CGKeyCode: OrderedDictionary<[UInt: Bool], Int>] = [:]
 
     init(fileName: String) {
-        self.json = {
+        json = {
             if let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
                 let saveDir = appSupportDir.appendingPathComponent("DebounceMac", isDirectory: true)
                 let cfgFile = saveDir.appendingPathComponent(fileName)
@@ -25,7 +25,7 @@ class Config {
                     }
                     let jsonString = Config.DEFAULT_JSON.rawString()
                     do {
-                        try jsonString!.write(to: cfgFile, atomically: false, encoding: .utf8)  // save default config file
+                        try jsonString!.write(to: cfgFile, atomically: false, encoding: .utf8) // save default config file
                     } catch {
                         logger.error("failed to save config file: \(cfgFile.path)")
                         return Config.DEFAULT_JSON
@@ -55,7 +55,7 @@ class Config {
             return Config.DEFAULT_JSON
         }()
 
-        guard let items = self.json.array else {
+        guard let items = json.array else {
             logger.error("malformed json")
             return
         }
@@ -70,13 +70,13 @@ class Config {
             }
             if key == "ALL" {
                 for keyCode in keyMap.values {
-                    self.setDelayDict(keyCode: keyCode, delay: delay, condition: item["condition"])
+                    setDelayDict(keyCode: keyCode, delay: delay, condition: item["condition"])
                 }
             } else if let keyCode = keyMap[key] {
-                self.setDelayDict(keyCode: keyCode, delay: delay, condition: item["condition"])
+                setDelayDict(keyCode: keyCode, delay: delay, condition: item["condition"])
             }
         }
-        logger.debug(self.delayDict)
+        logger.debug(delayDict)
     }
 
     private func setDelayDict(keyCode: Int, delay: Int, condition: JSON) {
@@ -91,16 +91,16 @@ class Config {
                 }
             }
         }
-        if self.delayDict[cgKeyCode] == nil {
-            self.delayDict[cgKeyCode] = [conditionDict: delay]
+        if delayDict[cgKeyCode] == nil {
+            delayDict[cgKeyCode] = [conditionDict: delay]
         } else {
-            self.delayDict[cgKeyCode]![conditionDict] = delay
+            delayDict[cgKeyCode]![conditionDict] = delay
         }
     }
 
     func getDelay(keyCode: CGKeyCode, modifierFlags: NSEvent.ModifierFlags) -> Int? {
         logger.debug("key code: \(keyCode) modifiers: \(modifierMap.filter { modifierFlags.contains($0.value) }.keys)")
-        if let conditionalDelay = self.delayDict[keyCode] {
+        if let conditionalDelay = delayDict[keyCode] {
             logger.debug("condition: \(conditionalDelay)")
             var resultDelay: Int?
             for (condition, delay) in conditionalDelay {

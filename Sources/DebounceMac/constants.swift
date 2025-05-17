@@ -1,5 +1,5 @@
-import Carbon.HIToolbox
 import AppKit
+import Carbon.HIToolbox
 
 let keyMap: [String: Int] = [
     "A": kVK_ANSI_A,
@@ -120,7 +120,7 @@ let keyMap: [String: Int] = [
     "Underscore": kVK_JIS_Underscore,
     "KeypadComma": kVK_JIS_KeypadComma,
     "Eisu": kVK_JIS_Eisu,
-    "Kana": kVK_JIS_Kana
+    "Kana": kVK_JIS_Kana,
 ]
 
 let modifierMap: [String: NSEvent.ModifierFlags] = [
@@ -131,5 +131,5 @@ let modifierMap: [String: NSEvent.ModifierFlags] = [
     "Command": NSEvent.ModifierFlags.command,
     "NumericPad": NSEvent.ModifierFlags.numericPad,
     "Help": NSEvent.ModifierFlags.help,
-    "Function": NSEvent.ModifierFlags.function
+    "Function": NSEvent.ModifierFlags.function,
 ]
