@@ -94,7 +94,7 @@ class KeyChanger {
             let currentKeyCode = nsEvent.keyCode
             let keyboardId = cgEvent.getIntegerValueField(.keyboardEventKeyboardType)
 
-            if keyboardId != SYNTHETIC_KB_ID, currentKeyCode == lastKeyCode, !(nsEvent.isARepeat) {
+            if keyboardId != SYNTHETIC_KB_ID && currentKeyCode == lastKeyCode && !(nsEvent.isARepeat) {
                 if let debounceDelay = config.getDelay(keyCode: currentKeyCode, modifierFlags: nsEvent.modifierFlags) {
                     logger.debug("delay: \(debounceDelay) ? \(currentKeyTime) - \(lastKeyTime)")
                     if (currentKeyTime - lastKeyTime) < debounceDelay {
