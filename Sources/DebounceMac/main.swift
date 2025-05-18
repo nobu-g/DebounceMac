@@ -6,7 +6,7 @@ import SwiftyBeaver
 
 typealias EventTap = CFMachPort
 
-let SYNTHETIC_KB_ID = 666
+let SYNTHETIC_KB_ID = 93
 
 let logger = setupLogger()
 
