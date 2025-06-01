@@ -93,6 +93,9 @@ class KeyChanger {
             let currentKeyTime = Int64(Date().timeIntervalSince1970 * 1000)
             let currentKeyCode = nsEvent.keyCode
             let keyboardId = cgEvent.getIntegerValueField(.keyboardEventKeyboardType)
+            // debug logging
+            logger.info("keyboardId: \(keyboardId)")
+            logger.info("currentKeyCode: \(currentKeyCode)")
 
             if keyboardId != SYNTHETIC_KB_ID && currentKeyCode == lastKeyCode && !(nsEvent.isARepeat) {
                 if let debounceDelay = config.getDelay(keyCode: currentKeyCode, modifierFlags: nsEvent.modifierFlags) {
