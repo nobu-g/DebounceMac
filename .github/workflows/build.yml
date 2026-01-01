@@ -34,7 +34,7 @@ jobs:
         zip DebounceMac-${{ matrix.arch }}.zip DebounceMac
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: DebounceMac-${{ matrix.arch }}
         path: artifacts/DebounceMac-${{ matrix.arch }}.zip
