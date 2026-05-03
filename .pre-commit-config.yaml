@@ -4,18 +4,18 @@ ci:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: check-yaml
       - id: check-toml
   - repo: https://github.com/realm/SwiftLint
-    rev: 0.59.1
+    rev: 0.63.2
     hooks:
       - id: swiftlint
-        args: ["--fix"]
+        args: [--fix]
   - repo: https://github.com/nicklockwood/SwiftFormat
-    rev: 0.56.1
+    rev: 0.61.1
     hooks:
       - id: swiftformat

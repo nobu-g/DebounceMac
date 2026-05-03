@@ -1,7 +1,7 @@
 import AppKit
 import OrderedCollections
 
-// Define Codable structs for JSON configuration
+/// Define Codable structs for JSON configuration
 struct KeyConfig: Codable {
     let key: String
     let delay: Int
@@ -66,8 +66,7 @@ class Config {
             do {
                 let jsonData = try Data(contentsOf: cfgFile)
                 let decoder = JSONDecoder()
-                let configs = try decoder.decode([KeyConfig].self, from: jsonData)
-                return configs
+                return try decoder.decode([KeyConfig].self, from: jsonData)
             } catch {
                 logger.error("failed to parse config file: \(error)")
                 return Config.DEFAULT_CONFIG

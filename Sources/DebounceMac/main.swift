@@ -1,7 +1,6 @@
 import AppKit
 import Carbon.HIToolbox
 import CoreFoundation
-
 import SwiftyBeaver
 
 typealias EventTap = CFMachPort
