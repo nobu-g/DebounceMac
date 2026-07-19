@@ -1,40 +1,17 @@
-name: Build and Publish Artifacts
+name: Swift
 
 on: [push, pull_request]
 
 jobs:
   build:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        arch: [x86_64, arm64]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
+      - name: Checkout repository
+        uses: actions/checkout@v7
 
-    - name: Set up Swift
-      uses: swift-actions/setup-swift@v3
-      with:
-        swift-version: '6.1'
+      - name: Show Swift version
+        run: swift --version
 
-    # - name: Extract package version
-    #   id: version
-    #   run: echo "::set-output name=VERSION::$(cat Package.swift | grep -Eo 'from: \"[^\"]+' | cut -d '"' -f 2)"
-
-    - name: Build the package
-      run: |
-        swift build --configuration release --arch ${{ matrix.arch }}
-
-    - name: Archive build artifacts
-      run: |
-        mkdir -p artifacts
-        cp .build/release/DebounceMac artifacts/
-        cd artifacts
-        zip DebounceMac-${{ matrix.arch }}.zip DebounceMac
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v7
-      with:
-        name: DebounceMac-${{ matrix.arch }}
-        path: artifacts/DebounceMac-${{ matrix.arch }}.zip
+      - name: Build
+        run: swift build -v
