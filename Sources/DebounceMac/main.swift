@@ -92,15 +92,17 @@ class KeyChanger {
             let currentKeyTime = Int64(Date().timeIntervalSince1970 * 1000)
             let currentKeyCode = nsEvent.keyCode
             let keyboardId = cgEvent.getIntegerValueField(.keyboardEventKeyboardType)
-            // debug logging
-            logger.info("keyboardId: \(keyboardId)")
-            logger.info("currentKeyCode: \(currentKeyCode)")
+            // Key codes reconstruct everything the user types, so they are logged
+            // only at .verbose, a level no default destination emits or persists.
+            logger.verbose("keyboardId: \(keyboardId)")
+            logger.verbose("currentKeyCode: \(currentKeyCode)")
 
             if keyboardId != SYNTHETIC_KB_ID && currentKeyCode == lastKeyCode && !(nsEvent.isARepeat) {
                 if let debounceDelay = config.getDelay(keyCode: currentKeyCode, modifierFlags: nsEvent.modifierFlags) {
                     logger.debug("delay: \(debounceDelay) ? \(currentKeyTime) - \(lastKeyTime)")
                     if (currentKeyTime - lastKeyTime) < debounceDelay {
-                        logger.info("BOUNCE detected!!!  Character: '" + (nsEvent.characters ?? "") + "'")
+                        logger.info("BOUNCE detected!!!")
+                        logger.verbose("bounced keyCode: \(currentKeyCode)")
                         logger.info("Time between keys: \(currentKeyTime - lastKeyTime)ms (< \(debounceDelay)ms)")
 
                         lastKeyTime = currentKeyTime
