@@ -14,6 +14,18 @@ swift build -c release
 
 Note: to build this program, you need Xcode installed.
 
+## Privacy
+
+DebounceMac inspects every keystroke to do its job, but it does not record what
+you type: key codes and characters are never written to the console or to the
+log file (`~/Library/Caches/debounce_mac.log`) — the log contains operational
+events only. Versions up to v0.2.1 wrote the key code of every keypress to that
+log file; if you ran one of them, delete the old file:
+
+```shell
+rm ~/Library/Caches/debounce_mac.log
+```
+
 ## Auto-start at login
 
 ```shell

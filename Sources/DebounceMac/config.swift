@@ -98,7 +98,8 @@ class Config {
     }
 
     func getDelay(keyCode: CGKeyCode, modifierFlags: NSEvent.ModifierFlags) -> Int? {
-        logger.debug("key code: \(keyCode) modifiers: \(modifierMap.filter { modifierFlags.contains($0.value) }.keys)")
+        // Key codes are typed content; .verbose keeps them out of every default destination.
+        logger.verbose("key code: \(keyCode) modifiers: \(modifierMap.filter { modifierFlags.contains($0.value) }.keys)")
         if let conditionalDelay = delayDict[keyCode] {
             logger.debug("condition: \(conditionalDelay)")
             var resultDelay: Int?

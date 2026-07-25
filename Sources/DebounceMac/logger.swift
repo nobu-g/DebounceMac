@@ -4,6 +4,10 @@ import SwiftyBeaver
 func setupLogger() -> SwiftyBeaver.Type {
     let logger = SwiftyBeaver.self
 
+    // Privacy invariant: key codes and characters are logged at .verbose only.
+    // Neither destination below may have minLevel lower than .debug, otherwise
+    // typed content would reach the console or the persistent log file.
+
     let consoleDestination: ConsoleDestination = {
         let console = ConsoleDestination()
         console.format = "$Dyyyy-MM-dd HH:mm:ss$d $C$L$c: $M" // 2019-08-04 19:42:51 INFO: Initializing an event tap.
